@@ -47,16 +47,17 @@ function setOperation(operator){
     displayUp.textContent += displayDown.textContent;
    if(currentOperation != "") evaluate();
    if(operator != "x^y"){
-    if(justEvald) displayUp.textContent = Result + "^";
+    if(justEvald) displayUp.textContent = Result;
     displayUp.textContent += operator;
     currentOperation = operator;
    }else{
-    if(justEvald) displayUp.textContent = Result + currentOperation;
+    if(justEvald) displayUp.textContent = Result;
     displayUp.textContent += "^";
     currentOperation = "^";
    }
    firstNumber = displayDown.textContent;
    wipeDisplayDown = true;
+   justEvald = false;
 }
 function AC(){
     displayUp.textContent = "";
@@ -86,17 +87,22 @@ function power(a,b){
 }
 function evaluate(){
     secondNumber = displayDown.textContent;
-    displayDown.textContent = operate(currentOperation, firstNumber, secondNumber);
+    displayDown.textContent = roundToThree(operate(currentOperation, firstNumber, secondNumber));
     displayUp.textContent = `${firstNumber} ${currentOperation} ${secondNumber} = `;
     currentOperation = ""; 
     Result = displayDown.textContent;
     justEvald = true;
 }
+function roundToThree(x){
+    return Math.round(x*1000)/1000;
+}
 function addPoint(){
-
+if(displayDown.textContent.includes(".")) return;
+if(displayDown.textContent == "0") return;
+displayDown.textContent += ".";
 }
 function deleteChar(){
-
+    displayDown.textContent = displayDown.textContent.toString().slice(0,-1);
 }
 function operate(operator,a,b){
     a = Number(a);
